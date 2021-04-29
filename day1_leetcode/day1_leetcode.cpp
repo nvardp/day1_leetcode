@@ -173,74 +173,65 @@ struct For_sorting
 {
 	int value;
 	int bites;
-	void sortByValues()
-	{
-		
-	}
-	bool operator<(const For_sorting& rhs) const
-	{
-		return rhs.bites > bites;
+
+	bool operator<(const For_sorting& rhs) const {
+		return bites < rhs.bites ? true :
+			bites > rhs.bites ? false :
+				value < rhs.value;
 	}
 
 };
+
+
+bool sortByValues(const For_sorting& lhs, const For_sorting& rhs)
+{
+	return rhs.value > lhs.value;
+}
+bool sortBybits(const For_sorting& lhs, const For_sorting& rhs)
+{
+	return rhs.bites > lhs.bites;
+}
+
+int cout_bits(int n)
+{
+	unsigned int count = 0;
+	while (n) {
+		count += n & 1;
+		n >>= 1;
+	}
+	return count;
+}
 vector<int> sortByBits(vector<int>& arr) {
 	unsigned int count = 0; 
 	vector<int> result;
 	vector<For_sorting> tmp;
-	int tmp_value;
 	for (int i = 0; i < arr.size(); i++)
 	{
-		count = 0;
-		 tmp_value = arr[i];
-		while (arr[i]) {
-			count += arr[i] & 1;
-			arr[i] >>= 1;
-		}
+		count = cout_bits(arr[i]);
 		For_sorting obj;
 		obj.bites = count;
-		obj.value = tmp_value;
+		obj.value = arr[i];
 		tmp.push_back(obj);
 	}
 	bool equalBites=true;
-	/*for (int i = 0; i < tmp.size()-1; i++)
-	{
-		if (tmp[i].bites != tmp[i + 1].bites)
-		{
-			equalBites = false; break;
-		}
-	}
-	if(!equalBites)*/
-	sort(tmp.begin(), tmp.end()); // sranic heto ete havasar en, minchev et tex@ tver@ sortavorel
-	int i = 0;
-	while (tmp.begin() != tmp.end())
-	{
-		int start = i;
-		while (tmp[i].bites == tmp[i + 1].bites)
-		{
-			++i;
-		}
-		++tmp.begin();
-	}
+	sort(tmp.begin(), tmp.end()); 
 	for (int i = 0; i < tmp.size(); i++)
 	{
 		result.push_back(tmp[i].value);
 	}
-	if(equalBites)
-		sort(result.begin(), result.end());
 	for (size_t i = 0; i < result.size(); i++)
 	{
 		cout << result[i] << " ";
 	}
-	
 	return result;
 
 }
 int main()
 {
 	vector<string> vec{ "cba","daf","ghi" };
-	vector<int> vec2{ 2,5,6 };
-	minDeletionSize(vec);
-
+	vector<int> vec2{ 1024,512,256,128,64,32,16,8,4,2,1 };
+	//minDeletionSize(vec);
+	sortByBits(vec2);
 	//valid_Phone_numbers();
 
 
